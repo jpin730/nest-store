@@ -11,8 +11,11 @@ import {
 
 import { UUID } from 'crypto';
 
-import { ProductsService } from 'src/services/products.service';
-import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dtos';
+import { ProductsService } from '../services/products.service';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+} from 'src/products/dtos/products.dtos';
 
 @Controller('products')
 export class ProductsController {
