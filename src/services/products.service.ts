@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { UUID } from 'crypto';
+
 import { Product } from '../entities/product.entity';
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dtos';
 
 @Injectable()
 export class ProductsService {
@@ -19,7 +22,7 @@ export class ProductsService {
     return this.products;
   }
 
-  findOne(id: string) {
+  findOne(id: UUID) {
     const product = this.products.find((item) => item.id === id);
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -27,7 +30,7 @@ export class ProductsService {
     return product;
   }
 
-  create(payload: any) {
+  create(payload: CreateProductDto) {
     const product = {
       id: crypto.randomUUID(),
       ...payload,
@@ -36,7 +39,7 @@ export class ProductsService {
     return product;
   }
 
-  update(id: string, payload: any) {
+  update(id: UUID, payload: UpdateProductDto) {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -48,7 +51,7 @@ export class ProductsService {
     return this.products[index];
   }
 
-  remove(id: string) {
+  remove(id: UUID) {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Product with id ${id} not found`);
