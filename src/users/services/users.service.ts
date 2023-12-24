@@ -4,6 +4,8 @@ import { UUID } from 'crypto';
 
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/users.dtos';
+import { Order } from '../entities/order.entity';
+import { ProductsService } from 'src/products/services/products.service';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +17,8 @@ export class UsersService {
       role: 'admin',
     },
   ];
+
+  constructor(private productsService: ProductsService) {}
 
   findAll() {
     return this.users;
@@ -55,5 +59,17 @@ export class UsersService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return this.users.splice(index, 1);
+  }
+
+  getOrderByUser(id: UUID): Order {
+    const user = this.users.find((item) => item.id === id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return {
+      date: new Date(),
+      user,
+      products: this.productsService.findAll(),
+    };
   }
 }
