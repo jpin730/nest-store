@@ -8,6 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { UUID } from 'crypto';
 
@@ -17,6 +18,7 @@ import {
   UpdateProductDto,
 } from 'src/products/dtos/products.dtos';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}

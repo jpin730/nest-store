@@ -33,3 +33,7 @@ npm run test:e2e
 # test coverage
 npm run test:cov
 ```
+
+## Documentation
+
+Swagger Open API Reference in endpoint `/docs`
