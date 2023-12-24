@@ -22,12 +22,12 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts() {
+  getAll() {
     return this.productsService.findAll();
   }
 
   @Get(':id')
-  getProduct(@Param('id', ParseUUIDPipe) id: UUID) {
+  get(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.productsService.findOne(id);
   }
 
