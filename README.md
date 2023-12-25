@@ -1,6 +1,6 @@
 # Nest Store
 
-This repository contains the NestJS-based REST API backend that emulates an e-commerce store
+This repository contains the NestJS-based REST API backend that emulates an e-commerce store. Using Swagger Open API for documentation.
 
 ## Installation
 
