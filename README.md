@@ -36,4 +36,8 @@ npm run test:cov
 
 ## Documentation
 
-Swagger Open API Reference in endpoint `/docs`
+Swagger Open API Reference in root endpoint `/`
+
+## Deployment
+
+App deployed on: <https://nest-store-c3oo.onrender.com>.
