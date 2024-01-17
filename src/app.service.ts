@@ -1,17 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+import { Client } from 'pg';
 
-import config from './config';
+import { Task } from './common/entities/task.entity';
 
 @Injectable()
 export class AppService {
-  constructor(
-    @Inject(config.KEY)
-    private configService: ConfigType<typeof config>,
-  ) {}
+  constructor(@Inject('PG') private pgClient: Client) {}
 
   getHello(): string {
-    console.log(this.configService.apiKey);
     return 'Hello World!';
+  }
+
+  getTasks(): Promise<Task[]> {
+    return new Promise((resolve, reject) =>
+      this.pgClient.query('SELECT * FROM tasks', (err, res) =>
+        err ? reject(err) : resolve(res.rows),
+      ),
+    );
   }
 }
