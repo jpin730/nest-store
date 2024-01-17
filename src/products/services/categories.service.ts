@@ -14,11 +14,11 @@ export class CategoriesService {
     },
   ];
 
-  findAll() {
+  findAll(): Category[] {
     return this.categories;
   }
 
-  findOne(id: UUID) {
+  findOne(id: UUID): Category {
     const category = this.categories.find((item) => item.id === id);
     if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
@@ -26,7 +26,7 @@ export class CategoriesService {
     return category;
   }
 
-  create(payload: CreateCategoryDto) {
+  create(payload: CreateCategoryDto): Category {
     const category = {
       id: crypto.randomUUID(),
       ...payload,
@@ -35,7 +35,7 @@ export class CategoriesService {
     return category;
   }
 
-  update(id: UUID, payload: UpdateCategoryDto) {
+  update(id: UUID, payload: UpdateCategoryDto): Category {
     const index = this.categories.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Category with id ${id} not found`);
@@ -47,11 +47,11 @@ export class CategoriesService {
     return this.categories[index];
   }
 
-  remove(id: UUID) {
+  remove(id: UUID): Category {
     const index = this.categories.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return this.categories.splice(index, 1);
+    return this.categories.splice(index, 1).at(0);
   }
 }

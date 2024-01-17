@@ -18,11 +18,11 @@ export class ProductsService {
     },
   ];
 
-  findAll() {
+  findAll(): Product[] {
     return this.products;
   }
 
-  findOne(id: UUID) {
+  findOne(id: UUID): Product {
     const product = this.products.find((item) => item.id === id);
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -30,7 +30,7 @@ export class ProductsService {
     return product;
   }
 
-  create(payload: CreateProductDto) {
+  create(payload: CreateProductDto): Product {
     const product = {
       id: crypto.randomUUID(),
       ...payload,
@@ -39,7 +39,7 @@ export class ProductsService {
     return product;
   }
 
-  update(id: UUID, payload: UpdateProductDto) {
+  update(id: UUID, payload: UpdateProductDto): Product {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -51,11 +51,11 @@ export class ProductsService {
     return this.products[index];
   }
 
-  remove(id: UUID) {
+  remove(id: UUID): Product {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
-    return this.products.splice(index, 1);
+    return this.products.splice(index, 1).at(0);
   }
 }

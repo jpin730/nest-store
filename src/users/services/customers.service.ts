@@ -15,11 +15,11 @@ export class CustomersService {
     },
   ];
 
-  findAll() {
+  findAll(): Customer[] {
     return this.customers;
   }
 
-  findOne(id: UUID) {
+  findOne(id: UUID): Customer {
     const customer = this.customers.find((item) => item.id === id);
     if (!customer) {
       throw new NotFoundException(`Customer with id ${id} not found`);
@@ -27,7 +27,7 @@ export class CustomersService {
     return customer;
   }
 
-  create(payload: CreateCustomerDto) {
+  create(payload: CreateCustomerDto): Customer {
     const customer = {
       id: crypto.randomUUID(),
       ...payload,
@@ -36,7 +36,7 @@ export class CustomersService {
     return customer;
   }
 
-  update(id: UUID, payload: UpdateCustomerDto) {
+  update(id: UUID, payload: UpdateCustomerDto): Customer {
     const index = this.customers.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Customer with id ${id} not found`);
@@ -48,11 +48,11 @@ export class CustomersService {
     return this.customers[index];
   }
 
-  remove(id: UUID) {
+  remove(id: UUID): Customer {
     const index = this.customers.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Customer with id ${id} not found`);
     }
-    return this.customers.splice(index, 1);
+    return this.customers.splice(index, 1).at(0);
   }
 }

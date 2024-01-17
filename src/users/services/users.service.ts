@@ -20,11 +20,11 @@ export class UsersService {
 
   constructor(private productsService: ProductsService) {}
 
-  findAll() {
+  findAll(): User[] {
     return this.users;
   }
 
-  findOne(id: UUID) {
+  findOne(id: UUID): User {
     const user = this.users.find((item) => item.id === id);
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -32,7 +32,7 @@ export class UsersService {
     return user;
   }
 
-  create(payload: CreateUserDto) {
+  create(payload: CreateUserDto): User {
     const user = {
       id: crypto.randomUUID(),
       ...payload,
@@ -41,7 +41,7 @@ export class UsersService {
     return user;
   }
 
-  update(id: UUID, payload: UpdateUserDto) {
+  update(id: UUID, payload: UpdateUserDto): User {
     const index = this.users.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -53,12 +53,12 @@ export class UsersService {
     return this.users[index];
   }
 
-  remove(id: UUID) {
+  remove(id: UUID): User {
     const index = this.users.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    return this.users.splice(index, 1);
+    return this.users.splice(index, 1).at(0);
   }
 
   getOrderByUser(id: UUID): Order {

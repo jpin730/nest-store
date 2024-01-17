@@ -15,11 +15,11 @@ export class BrandsService {
     },
   ];
 
-  findAll() {
+  findAll(): Brand[] {
     return this.brands;
   }
 
-  findOne(id: UUID) {
+  findOne(id: UUID): Brand {
     const brand = this.brands.find((item) => item.id === id);
     if (!brand) {
       throw new NotFoundException(`Brand with id ${id} not found`);
@@ -27,7 +27,7 @@ export class BrandsService {
     return brand;
   }
 
-  create(payload: CreateBrandDto) {
+  create(payload: CreateBrandDto): Brand {
     const brand = {
       id: crypto.randomUUID(),
       ...payload,
@@ -36,7 +36,7 @@ export class BrandsService {
     return brand;
   }
 
-  update(id: UUID, payload: UpdateBrandDto) {
+  update(id: UUID, payload: UpdateBrandDto): Brand {
     const index = this.brands.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Brand with id ${id} not found`);
@@ -48,11 +48,11 @@ export class BrandsService {
     return this.brands[index];
   }
 
-  remove(id: UUID) {
+  remove(id: UUID): Brand {
     const index = this.brands.findIndex((item) => item.id === id);
     if (index === -1) {
       throw new NotFoundException(`Brand with id ${id} not found`);
     }
-    return this.brands.splice(index, 1);
+    return this.brands.splice(index, 1).at(0);
   }
 }
