@@ -19,6 +19,8 @@ import config from '../config';
           password,
           port,
           type: 'postgres',
+          synchronize: true,
+          autoLoadEntities: true,
         };
       },
     }),

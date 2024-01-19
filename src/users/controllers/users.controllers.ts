@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @Get(':id/orders')
-  getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Order {
+  getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
     return this.usersService.getOrderByUser(id);
   }
 

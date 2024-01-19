@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
-import { Product } from '../entities/product.entity';
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dtos';
+import { Product } from '../entities/product.entity';
 
 @Injectable()
 export class ProductsService {
@@ -18,12 +19,16 @@ export class ProductsService {
     },
   ];
 
-  findAll(): Product[] {
-    return this.products;
+  constructor(
+    @InjectRepository(Product) private productRepo: Repository<Product>,
+  ) {}
+
+  findAll(): Promise<Product[]> {
+    return this.productRepo.find();
   }
 
-  findOne(id: UUID): Product {
-    const product = this.products.find((item) => item.id === id);
+  findOne(id: UUID): Promise<Product> {
+    const product = this.productRepo.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }

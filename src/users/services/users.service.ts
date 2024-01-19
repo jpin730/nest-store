@@ -61,7 +61,7 @@ export class UsersService {
     return this.users.splice(index, 1).at(0);
   }
 
-  getOrderByUser(id: UUID): Order {
+  async getOrderByUser(id: UUID): Promise<Order> {
     const user = this.users.find((item) => item.id === id);
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -69,7 +69,7 @@ export class UsersService {
     return {
       date: new Date(),
       user,
-      products: this.productsService.findAll(),
+      products: await this.productsService.findAll(),
     };
   }
 }
