@@ -23,7 +23,7 @@ export class BrandsService {
     return brand;
   }
 
-  async create(payload: CreateBrandDto): Promise<Brand> {
+  create(payload: CreateBrandDto): Promise<Brand> {
     const brand = this.brandRepo.create(payload);
     return this.brandRepo.save(brand);
   }
