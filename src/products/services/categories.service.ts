@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
 import { Category } from '../entities/category.entity';
@@ -7,51 +8,41 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dtos';
 
 @Injectable()
 export class CategoriesService {
-  private categories: Category[] = [
-    {
-      id: crypto.randomUUID(),
-      name: 'Category 1',
-    },
-  ];
+  constructor(
+    @InjectRepository(Category) private categoryRepo: Repository<Category>,
+  ) {}
 
-  findAll(): Category[] {
-    return this.categories;
+  findAll(): Promise<Category[]> {
+    return this.categoryRepo.find();
   }
 
-  findOne(id: UUID): Category {
-    const category = this.categories.find((item) => item.id === id);
+  async findOne(id: UUID): Promise<Category> {
+    const category = await this.categoryRepo.findOne({ where: { id } });
     if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
     return category;
   }
 
-  create(payload: CreateCategoryDto): Category {
-    const category = {
-      id: crypto.randomUUID(),
-      ...payload,
-    };
-    this.categories.push(category);
-    return category;
+  async create(payload: CreateCategoryDto): Promise<Category> {
+    const category = this.categoryRepo.create(payload);
+    return this.categoryRepo.save(category);
   }
 
-  update(id: UUID, payload: UpdateCategoryDto): Category {
-    const index = this.categories.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async update(id: UUID, payload: UpdateCategoryDto): Promise<Category> {
+    const category = await this.categoryRepo.findOne({ where: { id } });
+    if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    this.categories[index] = {
-      ...this.categories[index],
-      ...payload,
-    };
-    return this.categories[index];
+    this.categoryRepo.merge(category, payload);
+    return this.categoryRepo.save(category);
   }
 
-  remove(id: UUID): Category {
-    const index = this.categories.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async remove(id: UUID): Promise<Category> {
+    const category = await this.categoryRepo.findOne({ where: { id } });
+    if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return this.categories.splice(index, 1).at(0);
+    return this.categoryRepo.remove(category);
   }
 }

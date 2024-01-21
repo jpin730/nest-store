@@ -22,17 +22,17 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
-  getAll(): Category[] {
+  getAll(): Promise<Category[]> {
     return this.categoriesService.findAll();
   }
 
   @Get(':id')
-  get(@Param('id', ParseUUIDPipe) id: UUID): Category {
+  get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Category> {
     return this.categoriesService.findOne(id);
   }
 
   @Post()
-  create(@Body() payload: CreateCategoryDto): Category {
+  create(@Body() payload: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(payload);
   }
 
@@ -40,12 +40,12 @@ export class CategoriesController {
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateCategoryDto,
-  ): Category {
+  ): Promise<Category> {
     return this.categoriesService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: UUID): Category {
+  delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Category> {
     return this.categoriesService.remove(id);
   }
 }
