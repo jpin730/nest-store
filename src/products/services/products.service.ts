@@ -27,40 +27,33 @@ export class ProductsService {
     return this.productRepo.find();
   }
 
-  findOne(id: UUID): Promise<Product> {
-    const product = this.productRepo.findOne({ where: { id } });
+  async findOne(id: UUID): Promise<Product> {
+    const product = await this.productRepo.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
     return product;
   }
 
-  create(payload: CreateProductDto): Product {
-    const product = {
-      id: crypto.randomUUID(),
-      ...payload,
-    };
-    this.products.push(product);
-    return product;
+  create(payload: CreateProductDto): Promise<Product> {
+    const product = this.productRepo.create(payload);
+    return this.productRepo.save(product);
   }
 
-  update(id: UUID, payload: UpdateProductDto): Product {
-    const index = this.products.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async update(id: UUID, payload: UpdateProductDto): Promise<Product> {
+    const product = await this.productRepo.findOne({ where: { id } });
+    if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
-    this.products[index] = {
-      ...this.products[index],
-      ...payload,
-    };
-    return this.products[index];
+    this.productRepo.merge(product, payload);
+    return this.productRepo.save(product);
   }
 
-  remove(id: UUID): Product {
-    const index = this.products.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async remove(id: UUID): Promise<Product> {
+    const product = await this.productRepo.findOne({ where: { id } });
+    if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
-    return this.products.splice(index, 1).at(0);
+    return this.productRepo.remove(product);
   }
 }

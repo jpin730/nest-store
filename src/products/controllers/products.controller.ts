@@ -35,7 +35,7 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() payload: CreateProductDto): Product {
+  create(@Body() payload: CreateProductDto): Promise<Product> {
     return this.productsService.create(payload);
   }
 
@@ -43,12 +43,12 @@ export class ProductsController {
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateProductDto,
-  ): Product {
+  ): Promise<Product> {
     return this.productsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: UUID): Product {
+  delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Product> {
     return this.productsService.remove(id);
   }
 }
