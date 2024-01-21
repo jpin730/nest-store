@@ -22,17 +22,17 @@ export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
   @Get()
-  getAll(): Brand[] {
+  getAll(): Promise<Brand[]> {
     return this.brandsService.findAll();
   }
 
   @Get(':id')
-  get(@Param('id', ParseUUIDPipe) id: UUID): Brand {
+  get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Brand> {
     return this.brandsService.findOne(id);
   }
 
   @Post()
-  create(@Body() payload: CreateBrandDto): Brand {
+  create(@Body() payload: CreateBrandDto): Promise<Brand> {
     return this.brandsService.create(payload);
   }
 
@@ -40,12 +40,12 @@ export class BrandsController {
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateBrandDto,
-  ): Brand {
+  ): Promise<Brand> {
     return this.brandsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: UUID): Brand {
+  delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Brand> {
     return this.brandsService.remove(id);
   }
 }
