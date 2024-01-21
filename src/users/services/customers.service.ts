@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
 import { Customer } from '../entities/customer.entity';
@@ -7,52 +8,41 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dtos';
 
 @Injectable()
 export class CustomersService {
-  private customers: Customer[] = [
-    {
-      id: crypto.randomUUID(),
-      name: 'Customer 1',
-      phone: '+123 456 7890',
-    },
-  ];
+  constructor(
+    @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+  ) {}
 
-  findAll(): Customer[] {
-    return this.customers;
+  findAll(): Promise<Customer[]> {
+    return this.customerRepo.find();
   }
 
-  findOne(id: UUID): Customer {
-    const customer = this.customers.find((item) => item.id === id);
+  async findOne(id: UUID): Promise<Customer> {
+    const customer = await this.customerRepo.findOne({ where: { id } });
     if (!customer) {
       throw new NotFoundException(`Customer with id ${id} not found`);
     }
     return customer;
   }
 
-  create(payload: CreateCustomerDto): Customer {
-    const customer = {
-      id: crypto.randomUUID(),
-      ...payload,
-    };
-    this.customers.push(customer);
-    return customer;
+  create(payload: CreateCustomerDto): Promise<Customer> {
+    const customer = this.customerRepo.create(payload);
+    return this.customerRepo.save(customer);
   }
 
-  update(id: UUID, payload: UpdateCustomerDto): Customer {
-    const index = this.customers.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async update(id: UUID, payload: UpdateCustomerDto): Promise<Customer> {
+    const customer = await this.customerRepo.findOne({ where: { id } });
+    if (!customer) {
       throw new NotFoundException(`Customer with id ${id} not found`);
     }
-    this.customers[index] = {
-      ...this.customers[index],
-      ...payload,
-    };
-    return this.customers[index];
+    this.customerRepo.merge(customer, payload);
+    return this.customerRepo.save(customer);
   }
 
-  remove(id: UUID): Customer {
-    const index = this.customers.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async remove(id: UUID): Promise<Customer> {
+    const customer = await this.customerRepo.findOne({ where: { id } });
+    if (!customer) {
       throw new NotFoundException(`Customer with id ${id} not found`);
     }
-    return this.customers.splice(index, 1).at(0);
+    return this.customerRepo.remove(customer);
   }
 }
