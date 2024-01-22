@@ -41,7 +41,10 @@ export class UsersService {
   }
 
   async update(id: UUID, payload: UpdateUserDto): Promise<User> {
-    const user = await this.userRepo.findOne({ where: { id } });
+    const user = await this.userRepo.findOne({
+      where: { id },
+      relations: ['customer'],
+    });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -53,7 +56,10 @@ export class UsersService {
   }
 
   async remove(id: UUID): Promise<User> {
-    const user = await this.userRepo.findOne({ where: { id } });
+    const user = await this.userRepo.findOne({
+      where: { id },
+      relations: ['customer'],
+    });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }

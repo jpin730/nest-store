@@ -8,8 +8,7 @@ import {
   Delete,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { CustomersService } from '../services/customers.service';
@@ -22,21 +21,27 @@ export class CustomersController {
   constructor(private customersService: CustomersService) {}
 
   @Get()
+  @ApiResponse({ type: Customer, isArray: true, status: 200 })
   getAll(): Promise<Customer[]> {
     return this.customersService.findAll();
   }
 
   @Get(':id')
+  @ApiResponse({ type: Customer, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Customer> {
     return this.customersService.findOne(id);
   }
 
   @Post()
+  @ApiResponse({ type: Customer, status: 201 })
+  @ApiBody({ type: CreateCustomerDto })
   create(@Body() payload: CreateCustomerDto): Promise<Customer> {
     return this.customersService.create(payload);
   }
 
   @Put(':id')
+  @ApiResponse({ type: Customer, status: 200 })
+  @ApiBody({ type: UpdateCustomerDto })
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateCustomerDto,
@@ -45,6 +50,7 @@ export class CustomersController {
   }
 
   @Delete(':id')
+  @ApiResponse({ type: Customer, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Customer> {
     return this.customersService.remove(id);
   }

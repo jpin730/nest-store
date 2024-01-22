@@ -11,11 +11,7 @@ async function bootstrap(): Promise<void> {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('Nest Store API')
-    .setDescription('A simple store API built with NestJS.')
-    .setVersion('1.0')
-    .build();
+  const config = new DocumentBuilder().setTitle('Nest Store API').build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);

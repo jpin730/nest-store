@@ -30,18 +30,21 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   role: string;
 
+  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
 
+  @ApiProperty({ type: () => Customer })
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
   @JoinColumn()
   customer: Customer;

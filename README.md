@@ -1,4 +1,4 @@
-# Nest Store
+# Nest Store API
 
 NestJS-based REST API backend that emulates an e-commerce store. Using Swagger Open API for documentation and it connects to a PostgreSQL database through TypeORM including migrations.
 

@@ -25,12 +25,14 @@ export class Brand {
   @Column({ type: 'varchar', length: 255 })
   image: string;
 
+  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

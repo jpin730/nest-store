@@ -37,12 +37,14 @@ export class Product {
   @Column({ type: 'varchar' })
   image: string;
 
+  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

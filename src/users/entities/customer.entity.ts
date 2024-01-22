@@ -25,18 +25,21 @@ export class Customer {
   @Column({ type: 'varchar', length: 255 })
   phone: string;
 
+  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
 
+  @ApiProperty({ type: () => User })
   @OneToOne(() => User, (user) => user.customer, { nullable: true })
   user: User;
 }
