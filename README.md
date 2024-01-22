@@ -1,6 +1,6 @@
 # Nest Store
 
-NestJS-based REST API backend that emulates an e-commerce store. Using Swagger Open API for documentation and it connects to a PostgreSQL database through TypeORM.
+NestJS-based REST API backend that emulates an e-commerce store. Using Swagger Open API for documentation and it connects to a PostgreSQL database through TypeORM including migrations.
 
 ## Installation
 
@@ -51,6 +51,24 @@ To connect to the database, you need to create a new server in PGAdmin with the 
 - Maintenance DB: The name of your database, somethin like: `roxvyxky`.
 - Username: Username for your database, somethin like: `roxvyxky`.
 - Password: Password for your database.
+
+For generate migrations, you need to run the following command:
+
+```bash
+npm run migrations:generate -- src/database/migrations/[MIGRATION_NAME]
+```
+
+For run migrations, you need to run the following command:
+
+```bash
+npm run migrations:run
+```
+
+For show migrations, you need to run the following command:
+
+```bash
+npm run migrations:show
+```
 
 ## Deployment
 
