@@ -1,68 +1,56 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
-import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/users.dtos';
 import { Order } from '../entities/order.entity';
 import { ProductsService } from 'src/products/services/products.service';
+import { User } from '../entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    {
-      id: crypto.randomUUID(),
-      email: 'user1@mail.com',
-      password: '123456',
-      role: 'admin',
-    },
-  ];
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    private productsService: ProductsService,
+  ) {}
 
-  constructor(private productsService: ProductsService) {}
-
-  findAll(): User[] {
-    return this.users;
+  findAll(): Promise<User[]> {
+    return this.userRepo.find();
   }
 
-  findOne(id: UUID): User {
-    const user = this.users.find((item) => item.id === id);
+  async findOne(id: UUID): Promise<User> {
+    const user = await this.userRepo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return user;
   }
 
-  create(payload: CreateUserDto): User {
-    const user = {
-      id: crypto.randomUUID(),
-      ...payload,
-    };
-    this.users.push(user);
-    return user;
+  create(payload: CreateUserDto): Promise<User> {
+    const user = this.userRepo.create(payload);
+    return this.userRepo.save(user);
   }
 
-  update(id: UUID, payload: UpdateUserDto): User {
-    const index = this.users.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async update(id: UUID, payload: UpdateUserDto): Promise<User> {
+    const user = await this.userRepo.findOne({ where: { id } });
+    if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    this.users[index] = {
-      ...this.users[index],
-      ...payload,
-    };
-    return this.users[index];
+    this.userRepo.merge(user, payload);
+    return this.userRepo.save(user);
   }
 
-  remove(id: UUID): User {
-    const index = this.users.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async remove(id: UUID): Promise<User> {
+    const user = await this.userRepo.findOne({ where: { id } });
+    if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    return this.users.splice(index, 1).at(0);
+    return this.userRepo.remove(user);
   }
 
   async getOrderByUser(id: UUID): Promise<Order> {
-    const user = this.users.find((item) => item.id === id);
+    const user = await this.userRepo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }

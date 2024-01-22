@@ -23,22 +23,17 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  getAll(): User[] {
+  getAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  get(@Param('id', ParseUUIDPipe) id: UUID): User {
+  get(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
     return this.usersService.findOne(id);
   }
 
-  @Get(':id/orders')
-  getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
-    return this.usersService.getOrderByUser(id);
-  }
-
   @Post()
-  create(@Body() payload: CreateUserDto): User {
+  create(@Body() payload: CreateUserDto): Promise<User> {
     return this.usersService.create(payload);
   }
 
@@ -46,12 +41,17 @@ export class UsersController {
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateUserDto,
-  ): User {
+  ): Promise<User> {
     return this.usersService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: UUID): User {
+  delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
     return this.usersService.remove(id);
+  }
+
+  @Get(':id/orders')
+  getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
+    return this.usersService.getOrderByUser(id);
   }
 }
