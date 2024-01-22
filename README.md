@@ -52,6 +52,8 @@ To connect to the database, you need to create a new server in PGAdmin with the 
 - Username: Username for your database, somethin like: `roxvyxky`.
 - Password: Password for your database.
 
+## Migrations
+
 For generate migrations, you need to run the following command:
 
 ```bash
