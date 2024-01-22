@@ -5,8 +5,10 @@ import {
   IsNumber,
   IsPositive,
   IsString,
+  IsUUID,
   IsUrl,
 } from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreateProductDto {
   @IsString()
@@ -30,6 +32,10 @@ export class CreateProductDto {
   @IsUrl()
   @IsNotEmpty()
   readonly image: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  readonly brandId: UUID;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

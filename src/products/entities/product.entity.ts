@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'crypto';
+
+import { Brand } from './brand.entity';
 
 @Entity()
 export class Product {
@@ -45,4 +48,8 @@ export class Product {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  @ApiProperty()
+  @ManyToOne(() => Brand, (brand) => brand.products)
+  brand: Brand;
 }
