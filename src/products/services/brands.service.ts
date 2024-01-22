@@ -18,7 +18,7 @@ export class BrandsService {
   async findOne(id: UUID): Promise<Brand> {
     const brand = await this.brandRepo.findOne({
       where: { id },
-      relations: ['products'],
+      relations: { products: true },
     });
     if (!brand) {
       throw new NotFoundException(`Brand with id ${id} not found`);
@@ -32,7 +32,10 @@ export class BrandsService {
   }
 
   async update(id: UUID, payload: UpdateBrandDto): Promise<Brand> {
-    const brand = await this.brandRepo.findOne({ where: { id } });
+    const brand = await this.brandRepo.findOne({
+      where: { id },
+      relations: { products: true },
+    });
     if (!brand) {
       throw new NotFoundException(`Brand with id ${id} not found`);
     }

@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'crypto';
+
+import { Product } from './product.entity';
 
 @Entity()
 export class Category {
@@ -31,4 +34,8 @@ export class Category {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  @ApiProperty({ type: () => Product, isArray: true })
+  @ManyToMany(() => Product, (product) => product.categories)
+  products: Product[];
 }

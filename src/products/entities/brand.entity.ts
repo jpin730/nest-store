@@ -39,7 +39,7 @@ export class Brand {
   })
   updateAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Product, isArray: true })
   @OneToMany(() => Product, (product) => product.brand)
   products: Product[];
 }

@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,6 +12,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { Brand } from './brand.entity';
+import { Category } from './category.entity';
 
 @Entity()
 export class Product {
@@ -51,7 +54,12 @@ export class Product {
   })
   updateAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Brand })
   @ManyToOne(() => Brand, (brand) => brand.products)
   brand: Brand;
+
+  @ApiProperty({ type: () => Category, isArray: true })
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
+  categories: Category[];
 }
