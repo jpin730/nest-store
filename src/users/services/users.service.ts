@@ -18,13 +18,13 @@ export class UsersService {
   ) {}
 
   findAll(): Promise<User[]> {
-    return this.userRepo.find({ relations: ['customer'] });
+    return this.userRepo.find({ relations: { customer: true } });
   }
 
   async findOne(id: UUID): Promise<User> {
     const user = await this.userRepo.findOne({
       where: { id },
-      relations: ['customer'],
+      relations: { customer: true },
     });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -43,7 +43,7 @@ export class UsersService {
   async update(id: UUID, payload: UpdateUserDto): Promise<User> {
     const user = await this.userRepo.findOne({
       where: { id },
-      relations: ['customer'],
+      relations: { customer: true },
     });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -58,7 +58,7 @@ export class UsersService {
   async remove(id: UUID): Promise<User> {
     const user = await this.userRepo.findOne({
       where: { id },
-      relations: ['customer'],
+      relations: { customer: true },
     });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
