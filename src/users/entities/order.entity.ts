@@ -1,15 +1,42 @@
+import {
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { UUID } from 'crypto';
 
-import { Product } from './../../products/entities/product.entity';
-import { User } from './user.entity';
+import { Customer } from './customer.entity';
+import { OrderItem } from './order-item.entity';
 
+@Entity()
 export class Order {
   @ApiProperty()
-  date: Date;
+  @PrimaryGeneratedColumn('uuid')
+  id: UUID;
 
   @ApiProperty()
-  user: User;
+  @CreateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
 
   @ApiProperty()
-  products: Product[];
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
+
+  @ApiProperty({ type: () => Customer })
+  @ManyToOne(() => Customer, (customer) => customer.orders)
+  customer: Customer;
+
+  @ApiProperty({ type: () => OrderItem })
+  @OneToMany(() => OrderItem, (item) => item.order)
+  items: OrderItem[];
 }

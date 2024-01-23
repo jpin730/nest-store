@@ -14,7 +14,6 @@ import { UUID } from 'crypto';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/users.dtos';
 import { User } from '../entities/user.entity';
-import { Order } from '../entities/order.entity';
 
 @ApiTags('Users')
 @Controller('users')
@@ -61,10 +60,11 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Get(':id/orders')
-  @ApiOperation({ summary: 'Get a user orders' })
-  @ApiResponse({ type: Order, status: 200 })
-  getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
-    return this.usersService.getOrderByUser(id);
-  }
+  // TODO: Uncomment this code
+  // @Get(':id/orders')
+  // @ApiOperation({ summary: 'Get a user orders' })
+  // @ApiResponse({ type: Order, status: 200 })
+  // getOrderByUserId(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
+  //   return this.usersService.getOrderByUser(id);
+  // }
 }

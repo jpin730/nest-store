@@ -15,7 +15,7 @@ import { ProductsService } from '../services/products.service';
 import {
   CreateProductDto,
   UpdateProductDto,
-} from 'src/products/dtos/products.dtos';
+} from '../../products/dtos/products.dtos';
 import { Product } from '../entities/product.entity';
 
 @ApiTags('Products')
