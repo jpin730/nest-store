@@ -8,4 +8,8 @@ export default registerAs('config', () => ({
     password: process.env.PG_PASSWORD,
     port: parseInt(process.env.PG_PORT, 10),
   },
+  defaultQueryParams: {
+    limit: parseInt(process.env.DEFAULT_QUERY_LIMIT, 10),
+    offset: parseInt(process.env.DEFAULT_QUERY_OFFSET, 0),
+  },
 }));

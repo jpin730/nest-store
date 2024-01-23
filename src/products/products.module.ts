@@ -1,5 +1,6 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Brand } from './entities/brand.entity';
 import { BrandsController } from './controllers/brands.controller';
@@ -12,7 +13,7 @@ import { ProductsController } from './controllers/products.controller';
 import { ProductsService } from './services/products.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, Category, Brand])],
+  imports: [TypeOrmModule.forFeature([Product, Category, Brand]), ConfigModule],
   controllers: [ProductsController, CategoriesController, BrandsController],
   providers: [ProductsService, CategoriesService, BrandsService],
   exports: [TypeOrmModule],

@@ -7,13 +7,19 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
-import { ProductsService } from '../services/products.service';
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 import { Product } from '../entities/product.entity';
+import { ProductsService } from '../services/products.service';
+import {
+  ApiQueryFilters,
+  PaginatedDto,
+  QueryParamsDto,
+} from 'src/common/dtos/query-params.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -23,8 +29,9 @@ export class ProductsController {
   @Get()
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ type: Product, isArray: true, status: 200 })
-  getAll(): Promise<Product[]> {
-    return this.productsService.findAll();
+  @ApiQueryFilters()
+  getAll(@Query() queryParams: QueryParamsDto): Promise<PaginatedDto<Product>> {
+    return this.productsService.findAll(queryParams);
   }
 
   @Get(':id')
