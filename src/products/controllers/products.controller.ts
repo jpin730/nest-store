@@ -57,4 +57,22 @@ export class ProductsController {
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Product> {
     return this.productsService.remove(id);
   }
+
+  @Put(':id/category/:categoryId')
+  @ApiResponse({ type: Product, status: 200 })
+  addCategory(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Param('categoryId', ParseUUIDPipe) categoryId: UUID,
+  ): Promise<Product> {
+    return this.productsService.addCategoryByProduct(id, categoryId);
+  }
+
+  @Delete(':id/category/:categoryId')
+  @ApiResponse({ type: Product, status: 200 })
+  removeCategory(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Param('categoryId', ParseUUIDPipe) categoryId: UUID,
+  ): Promise<Product> {
+    return this.productsService.removeCategoryByProduct(id, categoryId);
+  }
 }

@@ -80,4 +80,42 @@ export class ProductsService {
     }
     return this.productRepo.remove(product);
   }
+
+  async addCategoryByProduct(
+    productId: UUID,
+    categoryId: UUID,
+  ): Promise<Product> {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: { brand: true, categories: true },
+    });
+    if (!product) {
+      throw new NotFoundException(`Product with id ${productId} not found`);
+    }
+    const category = await this.categoryRepo.findOne({
+      where: { id: categoryId },
+    });
+    if (!category) {
+      throw new NotFoundException(`Category with id ${categoryId} not found`);
+    }
+    product.categories.push(category);
+    return this.productRepo.save(product);
+  }
+
+  async removeCategoryByProduct(
+    productId: UUID,
+    categoryId: UUID,
+  ): Promise<Product> {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: { brand: true, categories: true },
+    });
+    if (!product) {
+      throw new NotFoundException(`Product with id ${productId} not found`);
+    }
+    product.categories = product.categories.filter(
+      (item) => item.id !== categoryId,
+    );
+    return this.productRepo.save(product);
+  }
 }
