@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dtos';
@@ -21,18 +21,21 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all categories' })
   @ApiResponse({ type: Category, isArray: true, status: 200 })
   getAll(): Promise<Category[]> {
     return this.categoriesService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a category' })
   @ApiResponse({ type: Category, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Category> {
     return this.categoriesService.findOne(id);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a category' })
   @ApiResponse({ type: Category, status: 201 })
   @ApiBody({ type: CreateCategoryDto })
   create(@Body() payload: CreateCategoryDto): Promise<Category> {
@@ -40,6 +43,7 @@ export class CategoriesController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update a category' })
   @ApiResponse({ type: Category, status: 200 })
   @ApiBody({ type: UpdateCategoryDto })
   update(
@@ -50,6 +54,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a category' })
   @ApiResponse({ type: Category, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Category> {
     return this.categoriesService.remove(id);

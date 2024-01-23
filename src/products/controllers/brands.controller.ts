@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { BrandsService } from '../services/brands.service';
@@ -21,6 +21,7 @@ export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all brands' })
   @ApiResponse({
     type: Brand,
     isArray: true,
@@ -31,12 +32,14 @@ export class BrandsController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a brand' })
   @ApiResponse({ type: Brand, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Brand> {
     return this.brandsService.findOne(id);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a brand' })
   @ApiResponse({ type: Brand, status: 201 })
   @ApiBody({ type: CreateBrandDto })
   create(@Body() payload: CreateBrandDto): Promise<Brand> {
@@ -44,6 +47,7 @@ export class BrandsController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update a brand' })
   @ApiResponse({ type: Brand, status: 200 })
   @ApiBody({ type: UpdateBrandDto })
   update(
@@ -54,6 +58,7 @@ export class BrandsController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a brand' })
   @ApiResponse({ type: Brand, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Brand> {
     return this.brandsService.remove(id);

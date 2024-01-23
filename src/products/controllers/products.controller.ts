@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { ProductsService } from '../services/products.service';
@@ -24,18 +24,21 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ type: Product, isArray: true, status: 200 })
   getAll(): Promise<Product[]> {
     return this.productsService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a product' })
   @ApiResponse({ type: Product, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Product> {
     return this.productsService.findOne(id);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a product' })
   @ApiResponse({ type: Product, status: 201 })
   @ApiBody({ type: CreateProductDto })
   create(@Body() payload: CreateProductDto): Promise<Product> {
@@ -43,6 +46,7 @@ export class ProductsController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update a product' })
   @ApiResponse({ type: Product, status: 200 })
   @ApiBody({ type: UpdateProductDto })
   update(
@@ -53,12 +57,14 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a product' })
   @ApiResponse({ type: Product, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Product> {
     return this.productsService.remove(id);
   }
 
   @Put(':id/category/:categoryId')
+  @ApiOperation({ summary: 'Add a category to a product' })
   @ApiResponse({ type: Product, status: 200 })
   addCategory(
     @Param('id', ParseUUIDPipe) id: UUID,
@@ -68,6 +74,7 @@ export class ProductsController {
   }
 
   @Delete(':id/category/:categoryId')
+  @ApiOperation({ summary: 'Remove a category from a product' })
   @ApiResponse({ type: Product, status: 200 })
   removeCategory(
     @Param('id', ParseUUIDPipe) id: UUID,
