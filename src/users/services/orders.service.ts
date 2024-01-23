@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dtos';
+import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
 import { Customer } from '../entities/customer.entity';
 import { Order } from '../entities/order.entity';
 

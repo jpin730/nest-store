@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UUID } from 'crypto';
 
 import { Brand } from '../entities/brand.entity';
-import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dtos';
+import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

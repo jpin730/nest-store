@@ -11,7 +11,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dto';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../entities/category.entity';
 

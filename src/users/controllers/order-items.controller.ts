@@ -11,10 +11,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
-import {
-  CreateOrderItemDto,
-  UpdateOrderItemDto,
-} from '../dtos/order-item.dtos';
+import { CreateOrderItemDto, UpdateOrderItemDto } from '../dtos/order-item.dto';
 import { OrderItem } from '../entities/order-item.entity';
 import { OrderItemsService } from '../services/order-items.service';
 

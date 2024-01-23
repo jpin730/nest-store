@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 
 import { Customer } from '../entities/customer.entity';
-import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dtos';
+import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dto';
 
 @Injectable()
 export class CustomersService {

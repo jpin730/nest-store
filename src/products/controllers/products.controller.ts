@@ -12,10 +12,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { ProductsService } from '../services/products.service';
-import {
-  CreateProductDto,
-  UpdateProductDto,
-} from '../../products/dtos/products.dtos';
+import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 import { Product } from '../entities/product.entity';
 
 @ApiTags('Products')

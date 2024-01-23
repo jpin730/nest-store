@@ -4,10 +4,7 @@ import { Order } from '../entities/order.entity';
 import { OrderItem } from '../entities/order-item.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Repository } from 'typeorm';
-import {
-  CreateOrderItemDto,
-  UpdateOrderItemDto,
-} from '../dtos/order-item.dtos';
+import { CreateOrderItemDto, UpdateOrderItemDto } from '../dtos/order-item.dto';
 import { UUID } from 'crypto';
 
 @Injectable()
