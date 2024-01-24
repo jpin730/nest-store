@@ -1,21 +1,43 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { ConfigType } from '@nestjs/config'
 import { Repository } from 'typeorm'
 import { UUID } from 'crypto'
 
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto'
+import {
+  CreateOrderDto,
+  PaginatedOrdersDto,
+  UpdateOrderDto,
+} from '../dtos/order.dto'
+import { QueryParamsDto } from '../../common/dtos/query-params.dto'
 import { Customer } from '../entities/customer.entity'
 import { Order } from '../entities/order.entity'
+import config from '../../config'
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order) private orderRepo: Repository<Order>,
     @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+    @Inject(config.KEY) private appConfig: ConfigType<typeof config>,
   ) {}
 
-  findAll(): Promise<Order[]> {
-    return this.orderRepo.find()
+  async findAll(queryParams: QueryParamsDto): Promise<PaginatedOrdersDto> {
+    const {
+      limit = this.appConfig.defaultQueryParams.limit,
+      offset = this.appConfig.defaultQueryParams.offset,
+    } = queryParams
+    const [data, total] = await this.orderRepo.findAndCount({
+      take: limit,
+      skip: offset,
+      order: { createAt: 'DESC' },
+    })
+    return {
+      data,
+      limit: limit,
+      offset: offset,
+      total,
+    }
   }
 
   async findOne(id: UUID): Promise<Order> {

@@ -7,13 +7,22 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UUID } from 'crypto'
 
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto'
-import { Order } from '../entities/order.entity'
+import {
+  ApiQueryFilters,
+  QueryParamsDto,
+} from '../../common/dtos/query-params.dto'
+import {
+  CreateOrderDto,
+  PaginatedOrdersDto,
+  UpdateOrderDto,
+} from '../dtos/order.dto'
 import { OrdersService } from '../services/orders.service'
+import { Order } from '../entities/order.entity'
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -22,9 +31,10 @@ export class OrdersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all orders' })
-  @ApiResponse({ type: Order, isArray: true, status: 200 })
-  findAll(): Promise<Order[]> {
-    return this.orderService.findAll()
+  @ApiResponse({ type: PaginatedOrdersDto, status: 200 })
+  @ApiQueryFilters()
+  findAll(@Query() queryParams: QueryParamsDto): Promise<PaginatedOrdersDto> {
+    return this.orderService.findAll(queryParams)
   }
 
   @Get(':id')
