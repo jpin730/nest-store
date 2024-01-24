@@ -10,6 +10,9 @@ import {
 } from 'class-validator'
 import { UUID } from 'crypto'
 
+import { PaginatedDto } from '../../common/dtos/query-params.dto'
+import { Product } from '../entities/product.entity'
+
 export class CreateProductDto {
   @ApiProperty()
   @IsString()
@@ -50,3 +53,17 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
+
+export class PaginatedProductsDto implements PaginatedDto<Product> {
+  @ApiProperty()
+  data: Product[]
+
+  @ApiProperty()
+  limit: number
+
+  @ApiProperty()
+  offset: number
+
+  @ApiProperty()
+  total: number
+}

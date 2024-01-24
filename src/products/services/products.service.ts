@@ -6,9 +6,13 @@ import { UUID } from 'crypto'
 
 import { Brand } from '../entities/brand.entity'
 import { Category } from '../entities/category.entity'
-import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto'
+import {
+  CreateProductDto,
+  PaginatedProductsDto,
+  UpdateProductDto,
+} from '../dtos/products.dto'
 import { Product } from '../entities/product.entity'
-import { PaginatedDto, QueryParamsDto } from 'src/common/dtos/query-params.dto'
+import { QueryParamsDto } from 'src/common/dtos/query-params.dto'
 import config from '../../config'
 
 @Injectable()
@@ -20,7 +24,7 @@ export class ProductsService {
     @Inject(config.KEY) private appConfig: ConfigType<typeof config>,
   ) {}
 
-  async findAll(queryParams: QueryParamsDto): Promise<PaginatedDto<Product>> {
+  async findAll(queryParams: QueryParamsDto): Promise<PaginatedProductsDto> {
     const {
       limit = this.appConfig.defaultQueryParams.limit,
       offset = this.appConfig.defaultQueryParams.offset,
