@@ -9,6 +9,9 @@ import {
 } from 'class-validator'
 import { UUID } from 'crypto'
 
+import { User } from '../entities/user.entity'
+import { PaginatedDto } from '../../common/dtos/query-params.dto'
+
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
@@ -33,3 +36,17 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
+
+export class PaginatedUsersDto implements PaginatedDto<User> {
+  @ApiProperty()
+  data: User[]
+
+  @ApiProperty()
+  limit: number
+
+  @ApiProperty()
+  offset: number
+
+  @ApiProperty()
+  total: number
+}

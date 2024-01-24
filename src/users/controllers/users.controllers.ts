@@ -7,12 +7,21 @@ import {
   Put,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UUID } from 'crypto'
 
 import { UsersService } from '../services/users.service'
-import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto'
+import {
+  CreateUserDto,
+  PaginatedUsersDto,
+  UpdateUserDto,
+} from '../dtos/users.dto'
+import {
+  ApiQueryFilters,
+  QueryParamsDto,
+} from '../../common/dtos/query-params.dto'
 import { User } from '../entities/user.entity'
 
 @ApiTags('Users')
@@ -22,9 +31,10 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ type: User, isArray: true, status: 200 })
-  getAll(): Promise<User[]> {
-    return this.usersService.findAll()
+  @ApiResponse({ type: PaginatedUsersDto, status: 200 })
+  @ApiQueryFilters()
+  getAll(@Query() queryParams: QueryParamsDto): Promise<PaginatedUsersDto> {
+    return this.usersService.findAll(queryParams)
   }
 
   @Get(':id')
