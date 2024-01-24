@@ -22,7 +22,7 @@ import { ProductsService } from '../services/products.service'
 import {
   ApiQueryFilters,
   QueryParamsDto,
-} from 'src/common/dtos/query-params.dto'
+} from '../../common/dtos/query-params.dto'
 
 @ApiTags('Products')
 @Controller('products')
@@ -31,7 +31,7 @@ export class ProductsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all products' })
-  @ApiResponse({ type: PaginatedProductsDto, isArray: true, status: 200 })
+  @ApiResponse({ type: PaginatedProductsDto, status: 200 })
   @ApiQueryFilters()
   getAll(@Query() queryParams: QueryParamsDto): Promise<PaginatedProductsDto> {
     return this.productsService.findAll(queryParams)

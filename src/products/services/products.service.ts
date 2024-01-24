@@ -12,7 +12,7 @@ import {
   UpdateProductDto,
 } from '../dtos/products.dto'
 import { Product } from '../entities/product.entity'
-import { QueryParamsDto } from 'src/common/dtos/query-params.dto'
+import { QueryParamsDto } from '../../common/dtos/query-params.dto'
 import config from '../../config'
 
 @Injectable()
