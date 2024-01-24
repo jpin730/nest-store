@@ -7,12 +7,21 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UUID } from 'crypto'
 
+import {
+  CreateBrandDto,
+  PaginatedBrandsDto,
+  UpdateBrandDto,
+} from '../dtos/brands.dto'
 import { BrandsService } from '../services/brands.service'
-import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto'
+import {
+  ApiQueryFilters,
+  QueryParamsDto,
+} from '../../common/dtos/query-params.dto'
 import { Brand } from '../entities/brand.entity'
 
 @ApiTags('Brands')
@@ -23,12 +32,12 @@ export class BrandsController {
   @Get()
   @ApiOperation({ summary: 'Get all brands' })
   @ApiResponse({
-    type: Brand,
-    isArray: true,
+    type: PaginatedBrandsDto,
     status: 200,
   })
-  getAll(): Promise<Brand[]> {
-    return this.brandsService.findAll()
+  @ApiQueryFilters()
+  getAll(@Query() queryParams: QueryParamsDto): Promise<PaginatedBrandsDto> {
+    return this.brandsService.findAll(queryParams)
   }
 
   @Get(':id')
