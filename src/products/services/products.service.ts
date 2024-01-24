@@ -1,15 +1,15 @@
-import { ConfigType } from '@nestjs/config';
-import { In, Repository } from 'typeorm';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UUID } from 'crypto';
+import { ConfigType } from '@nestjs/config'
+import { In, Repository } from 'typeorm'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { UUID } from 'crypto'
 
-import { Brand } from '../entities/brand.entity';
-import { Category } from '../entities/category.entity';
-import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
-import { Product } from '../entities/product.entity';
-import { PaginatedDto, QueryParamsDto } from 'src/common/dtos/query-params.dto';
-import config from '../../config';
+import { Brand } from '../entities/brand.entity'
+import { Category } from '../entities/category.entity'
+import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto'
+import { Product } from '../entities/product.entity'
+import { PaginatedDto, QueryParamsDto } from 'src/common/dtos/query-params.dto'
+import config from '../../config'
 
 @Injectable()
 export class ProductsService {
@@ -24,78 +24,78 @@ export class ProductsService {
     const {
       limit = this.appConfig.defaultQueryParams.limit,
       offset = this.appConfig.defaultQueryParams.offset,
-    } = queryParams;
+    } = queryParams
     const [data, total] = await this.productRepo.findAndCount({
       relations: { brand: true, categories: true },
       take: limit,
       skip: offset,
       order: { createAt: 'DESC' },
-    });
+    })
     return {
       data,
       limit: limit,
       offset: offset,
       total,
-    };
+    }
   }
 
   async findOne(id: UUID): Promise<Product> {
     const product = await this.productRepo.findOne({
       where: { id },
       relations: { brand: true, categories: true },
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+      throw new NotFoundException(`Product with id ${id} not found`)
     }
-    return product;
+    return product
   }
 
   async create(payload: CreateProductDto): Promise<Product> {
-    const product = this.productRepo.create(payload);
+    const product = this.productRepo.create(payload)
     if (payload.brandId) {
       product.brand = await this.brandRepo.findOne({
         where: { id: payload.brandId },
-      });
+      })
     }
     if (payload.categoryIds) {
       product.categories = await this.categoryRepo.findBy({
         id: In(payload.categoryIds),
-      });
+      })
     }
-    return this.productRepo.save(product);
+    return this.productRepo.save(product)
   }
 
   async update(id: UUID, payload: UpdateProductDto): Promise<Product> {
     const product = await this.productRepo.findOne({
       where: { id },
       relations: { brand: true, categories: true },
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+      throw new NotFoundException(`Product with id ${id} not found`)
     }
     if (payload.brandId) {
       product.brand = await this.brandRepo.findOne({
         where: { id: payload.brandId },
-      });
+      })
     }
     if (payload.categoryIds) {
       product.categories = await this.categoryRepo.findBy({
         id: In(payload.categoryIds),
-      });
+      })
     }
-    this.productRepo.merge(product, payload);
-    return this.productRepo.save(product);
+    this.productRepo.merge(product, payload)
+    return this.productRepo.save(product)
   }
 
   async remove(id: UUID): Promise<Product> {
     const product = await this.productRepo.findOne({
       where: { id },
       relations: { brand: true, categories: true },
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+      throw new NotFoundException(`Product with id ${id} not found`)
     }
-    return this.productRepo.remove(product);
+    return this.productRepo.remove(product)
   }
 
   async addCategoryByProduct(
@@ -105,18 +105,18 @@ export class ProductsService {
     const product = await this.productRepo.findOne({
       where: { id: productId },
       relations: { brand: true, categories: true },
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with id ${productId} not found`);
+      throw new NotFoundException(`Product with id ${productId} not found`)
     }
     const category = await this.categoryRepo.findOne({
       where: { id: categoryId },
-    });
+    })
     if (!category) {
-      throw new NotFoundException(`Category with id ${categoryId} not found`);
+      throw new NotFoundException(`Category with id ${categoryId} not found`)
     }
-    product.categories.push(category);
-    return this.productRepo.save(product);
+    product.categories.push(category)
+    return this.productRepo.save(product)
   }
 
   async removeCategoryByProduct(
@@ -126,13 +126,13 @@ export class ProductsService {
     const product = await this.productRepo.findOne({
       where: { id: productId },
       relations: { brand: true, categories: true },
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with id ${productId} not found`);
+      throw new NotFoundException(`Product with id ${productId} not found`)
     }
     product.categories = product.categories.filter(
       (item) => item.id !== categoryId,
-    );
-    return this.productRepo.save(product);
+    )
+    return this.productRepo.save(product)
   }
 }

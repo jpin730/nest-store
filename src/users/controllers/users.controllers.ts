@@ -7,13 +7,13 @@ import {
   Put,
   Delete,
   ParseUUIDPipe,
-} from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+} from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 
-import { UsersService } from '../services/users.service';
-import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
-import { User } from '../entities/user.entity';
+import { UsersService } from '../services/users.service'
+import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto'
+import { User } from '../entities/user.entity'
 
 @ApiTags('Users')
 @Controller('users')
@@ -24,14 +24,14 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ type: User, isArray: true, status: 200 })
   getAll(): Promise<User[]> {
-    return this.usersService.findAll();
+    return this.usersService.findAll()
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a user' })
   @ApiResponse({ type: User, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
-    return this.usersService.findOne(id);
+    return this.usersService.findOne(id)
   }
 
   @Post()
@@ -39,7 +39,7 @@ export class UsersController {
   @ApiResponse({ type: User, status: 201 })
   @ApiBody({ type: CreateUserDto })
   create(@Body() payload: CreateUserDto): Promise<User> {
-    return this.usersService.create(payload);
+    return this.usersService.create(payload)
   }
 
   @Put(':id')
@@ -50,14 +50,14 @@ export class UsersController {
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateUserDto,
   ): Promise<User> {
-    return this.usersService.update(id, payload);
+    return this.usersService.update(id, payload)
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({ type: User, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
-    return this.usersService.remove(id);
+    return this.usersService.remove(id)
   }
 
   // TODO: Uncomment this code

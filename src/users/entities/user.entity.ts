@@ -6,46 +6,46 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+} from 'typeorm'
+import { ApiProperty } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 
-import { Customer } from './customer.entity';
+import { Customer } from './customer.entity'
 
 @Entity()
 export class User {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  id: UUID
 
   @ApiProperty()
   @Column({ type: 'varchar', length: 255 })
-  email: string;
+  email: string
 
   @ApiProperty()
   @Column({ type: 'varchar', length: 255 })
-  password: string;
+  password: string
 
   @ApiProperty()
   @Column({ type: 'varchar', length: 100 })
-  role: string;
+  role: string
 
   @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date;
+  createAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date;
+  updateAt: Date
 
   @ApiProperty({ type: () => Customer })
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
   @JoinColumn()
-  customer: Customer;
+  customer: Customer
 }

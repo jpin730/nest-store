@@ -5,41 +5,41 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+} from 'typeorm'
+import { ApiProperty } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 
-import { Product } from './product.entity';
+import { Product } from './product.entity'
 
 @Entity()
 export class Brand {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  id: UUID
 
   @ApiProperty()
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name: string
 
   @ApiProperty()
   @Column({ type: 'varchar', length: 255 })
-  image: string;
+  image: string
 
   @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date;
+  createAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date;
+  updateAt: Date
 
   @ApiProperty({ type: () => Product, isArray: true })
   @OneToMany(() => Product, (product) => product.brand)
-  products: Product[];
+  products: Product[]
 }

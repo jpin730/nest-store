@@ -7,13 +7,13 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-} from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+} from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
-import { Order } from '../entities/order.entity';
-import { OrdersService } from '../services/orders.service';
+import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto'
+import { Order } from '../entities/order.entity'
+import { OrdersService } from '../services/orders.service'
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -24,14 +24,14 @@ export class OrdersController {
   @ApiOperation({ summary: 'Get all orders' })
   @ApiResponse({ type: Order, isArray: true, status: 200 })
   findAll(): Promise<Order[]> {
-    return this.orderService.findAll();
+    return this.orderService.findAll()
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get an order' })
   @ApiResponse({ type: Order, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
-    return this.orderService.findOne(id);
+    return this.orderService.findOne(id)
   }
 
   @Post()
@@ -39,7 +39,7 @@ export class OrdersController {
   @ApiResponse({ type: Order, status: 201 })
   @ApiBody({ type: CreateOrderDto })
   create(@Body() payload: CreateOrderDto): Promise<Order> {
-    return this.orderService.create(payload);
+    return this.orderService.create(payload)
   }
 
   @Put(':id')
@@ -50,13 +50,13 @@ export class OrdersController {
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateOrderDto,
   ): Promise<Order> {
-    return this.orderService.update(id, payload);
+    return this.orderService.update(id, payload)
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete an order' })
   @ApiResponse({ type: Order, status: 200 })
   remove(@Param('id', ParseUUIDPipe) id: UUID): Promise<Order> {
-    return this.orderService.remove(id);
+    return this.orderService.remove(id)
   }
 }

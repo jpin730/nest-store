@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger'
 import {
   IsArray,
   IsNotEmpty,
@@ -7,46 +7,46 @@ import {
   IsString,
   IsUUID,
   IsUrl,
-} from 'class-validator';
-import { UUID } from 'crypto';
+} from 'class-validator'
+import { UUID } from 'crypto'
 
 export class CreateProductDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  readonly name: string
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly description: string;
+  readonly description: string
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  readonly price: number;
+  readonly price: number
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  readonly stock: number;
+  readonly stock: number
 
   @ApiProperty()
   @IsUrl()
   @IsNotEmpty()
-  readonly image: string;
+  readonly image: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID()
-  readonly brandId: UUID;
+  readonly brandId: UUID
 
   @IsArray()
   @IsNotEmpty()
   @ApiProperty()
-  readonly categoryIds: UUID[];
+  readonly categoryIds: UUID[]
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

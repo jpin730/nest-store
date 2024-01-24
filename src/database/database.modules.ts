@@ -1,8 +1,8 @@
-import { Module, Global } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigType } from '@nestjs/config';
+import { Module, Global } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigType } from '@nestjs/config'
 
-import config from '../config';
+import config from '../config'
 
 @Global()
 @Module({
@@ -10,7 +10,7 @@ import config from '../config';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, database, password, port } = configService.pg;
+        const { user, host, database, password, port } = configService.pg
         return {
           database,
           host,
@@ -20,7 +20,7 @@ import config from '../config';
           type: 'postgres',
           synchronize: false,
           autoLoadEntities: true,
-        };
+        }
       },
     }),
   ],

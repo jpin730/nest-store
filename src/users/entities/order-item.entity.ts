@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+import { ApiProperty } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 import {
   Column,
   CreateDateColumn,
@@ -7,40 +7,40 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from 'typeorm'
 
-import { Product } from '../../products/entities/product.entity';
-import { Order } from './order.entity';
+import { Product } from '../../products/entities/product.entity'
+import { Order } from './order.entity'
 
 @Entity()
 export class OrderItem {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  id: UUID
 
   @ApiProperty()
   @Column({ type: 'int' })
-  quantity: number;
+  quantity: number
 
   @ApiProperty()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date;
+  createAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date;
+  updateAt: Date
 
   @ApiProperty({ type: () => Product })
   @ManyToOne(() => Product)
-  product: Product;
+  product: Product
 
   @ApiProperty({ type: () => Order })
   @ManyToOne(() => Order, (order) => order.items)
-  order: Order;
+  order: Order
 }

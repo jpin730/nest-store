@@ -1,4 +1,4 @@
-import { registerAs } from '@nestjs/config';
+import { registerAs } from '@nestjs/config'
 
 export default registerAs('config', () => ({
   pg: {
@@ -12,4 +12,4 @@ export default registerAs('config', () => ({
     limit: parseInt(process.env.DEFAULT_QUERY_LIMIT, 10),
     offset: parseInt(process.env.DEFAULT_QUERY_OFFSET, 0),
   },
-}));
+}))

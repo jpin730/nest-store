@@ -7,13 +7,13 @@ import {
   Put,
   Delete,
   ParseUUIDPipe,
-} from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+} from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UUID } from 'crypto'
 
-import { CustomersService } from '../services/customers.service';
-import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dto';
-import { Customer } from '../entities/customer.entity';
+import { CustomersService } from '../services/customers.service'
+import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dto'
+import { Customer } from '../entities/customer.entity'
 
 @ApiTags('Customers')
 @Controller('customers')
@@ -24,14 +24,14 @@ export class CustomersController {
   @ApiOperation({ summary: 'Get all customers' })
   @ApiResponse({ type: Customer, isArray: true, status: 200 })
   getAll(): Promise<Customer[]> {
-    return this.customersService.findAll();
+    return this.customersService.findAll()
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a customer' })
   @ApiResponse({ type: Customer, status: 200 })
   get(@Param('id', ParseUUIDPipe) id: UUID): Promise<Customer> {
-    return this.customersService.findOne(id);
+    return this.customersService.findOne(id)
   }
 
   @Post()
@@ -39,7 +39,7 @@ export class CustomersController {
   @ApiResponse({ type: Customer, status: 201 })
   @ApiBody({ type: CreateCustomerDto })
   create(@Body() payload: CreateCustomerDto): Promise<Customer> {
-    return this.customersService.create(payload);
+    return this.customersService.create(payload)
   }
 
   @Put(':id')
@@ -50,13 +50,13 @@ export class CustomersController {
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() payload: UpdateCustomerDto,
   ): Promise<Customer> {
-    return this.customersService.update(id, payload);
+    return this.customersService.update(id, payload)
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a customer' })
   @ApiResponse({ type: Customer, status: 200 })
   delete(@Param('id', ParseUUIDPipe) id: UUID): Promise<Customer> {
-    return this.customersService.remove(id);
+    return this.customersService.remove(id)
   }
 }

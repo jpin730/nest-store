@@ -1,6 +1,6 @@
-import { applyDecorators } from '@nestjs/common';
-import { ApiQuery } from '@nestjs/swagger';
-import { IsOptional, IsPositive, Min } from 'class-validator';
+import { applyDecorators } from '@nestjs/common'
+import { ApiQuery } from '@nestjs/swagger'
+import { IsOptional, IsPositive, Min } from 'class-validator'
 
 export function ApiQueryFilters(): (...decorators: unknown[]) => void {
   return applyDecorators(
@@ -16,22 +16,22 @@ export function ApiQueryFilters(): (...decorators: unknown[]) => void {
       type: Number,
       description: 'Number of results to skip',
     }),
-  );
+  )
 }
 
 export class QueryParamsDto {
   @IsOptional()
   @IsPositive()
-  limit: number;
+  limit: number
 
   @IsOptional()
   @Min(0)
-  offset: number;
+  offset: number
 }
 
 export interface PaginatedDto<T> {
-  data: T[];
-  limit: number;
-  offset: number;
-  total: number;
+  data: T[]
+  limit: number
+  offset: number
+  total: number
 }

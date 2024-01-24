@@ -1,9 +1,9 @@
-import { ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
-import { config } from 'dotenv';
+import { ConfigService } from '@nestjs/config'
+import { DataSource } from 'typeorm'
+import { config } from 'dotenv'
 
-config();
-const configService = new ConfigService();
+config()
+const configService = new ConfigService()
 
 export default new DataSource({
   type: 'postgres',
@@ -17,4 +17,4 @@ export default new DataSource({
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],
   migrationsTableName: 'migrations',
-});
+})
