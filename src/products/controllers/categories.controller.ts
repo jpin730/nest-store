@@ -7,13 +7,22 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UUID } from 'crypto'
 
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dto'
+import {
+  CreateCategoryDto,
+  PaginatedCategoriesDto,
+  UpdateCategoryDto,
+} from '../dtos/categories.dto'
 import { CategoriesService } from '../services/categories.service'
 import { Category } from '../entities/category.entity'
+import {
+  ApiQueryFilters,
+  QueryParamsDto,
+} from '../../common/dtos/query-params.dto'
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -22,9 +31,12 @@ export class CategoriesController {
 
   @Get()
   @ApiOperation({ summary: 'Get all categories' })
-  @ApiResponse({ type: Category, isArray: true, status: 200 })
-  getAll(): Promise<Category[]> {
-    return this.categoriesService.findAll()
+  @ApiResponse({ type: PaginatedCategoriesDto, status: 200 })
+  @ApiQueryFilters()
+  getAll(
+    @Query() queryParams: QueryParamsDto,
+  ): Promise<PaginatedCategoriesDto> {
+    return this.categoriesService.findAll(queryParams)
   }
 
   @Get(':id')
