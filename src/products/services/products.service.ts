@@ -33,7 +33,7 @@ export class ProductsService {
       relations: { brand: true, categories: true },
       take: limit,
       skip: offset,
-      order: { createAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     })
     return {
       data,

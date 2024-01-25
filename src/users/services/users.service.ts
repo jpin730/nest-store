@@ -33,7 +33,7 @@ export class UsersService {
       relations: { customer: true },
       take: limit,
       skip: offset,
-      order: { createAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     })
     return {
       data,

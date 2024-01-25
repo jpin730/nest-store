@@ -30,7 +30,7 @@ export class OrdersService {
     const [data, total] = await this.orderRepo.findAndCount({
       take: limit,
       skip: offset,
-      order: { createAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     })
     return {
       data,

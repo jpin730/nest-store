@@ -28,7 +28,7 @@ export class BrandsService {
     const [data, total] = await this.brandRepo.findAndCount({
       take: limit,
       skip: offset,
-      order: { createAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     })
     return {
       data,

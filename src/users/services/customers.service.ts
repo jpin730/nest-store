@@ -28,7 +28,7 @@ export class CustomersService {
     const [data, total] = await this.customerRepo.findAndCount({
       take: limit,
       skip: offset,
-      order: { createAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     })
     return {
       data,
