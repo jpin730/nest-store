@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer'
 import { UUID } from 'crypto'
 
 import { Customer } from './customer.entity'
@@ -30,7 +31,8 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   role: string
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -38,7 +40,8 @@ export class User {
   })
   createdAt: Date
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

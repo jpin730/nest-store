@@ -28,6 +28,7 @@ export class OrdersService {
       offset = this.appConfig.defaultQueryParams.offset,
     } = queryParams
     const [data, total] = await this.orderRepo.findAndCount({
+      relations: { items: { product: true } },
       take: limit,
       skip: offset,
       order: { createdAt: 'DESC' },
@@ -65,7 +66,7 @@ export class OrdersService {
   async update(id: UUID, payload: UpdateOrderDto): Promise<Order> {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: { items: true },
+      relations: { items: { product: true } },
     })
     if (payload.customerId) {
       const customer = await this.customerRepo.findOne({
@@ -79,7 +80,7 @@ export class OrdersService {
   async remove(id: UUID): Promise<Order> {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: { items: true },
+      relations: { items: { product: true } },
     })
     if (!order) {
       throw new NotFoundException(`Order with id ${id} not found`)

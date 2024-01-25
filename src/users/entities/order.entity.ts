@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
+import { Exclude, Expose } from 'class-transformer'
 import { UUID } from 'crypto'
 
 import { Customer } from './customer.entity'
@@ -19,7 +20,8 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: UUID
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -27,7 +29,8 @@ export class Order {
   })
   createdAt: Date
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -43,4 +46,18 @@ export class Order {
   @ApiProperty({ type: () => OrderItem })
   @OneToMany(() => OrderItem, (item) => item.order)
   items: OrderItem[]
+
+  @Expose()
+  @ApiProperty()
+  get total(): number {
+    if (this.items) {
+      return this.items
+        .filter((item) => !!item)
+        .reduce((total, item) => {
+          const totalItem = item.product.price * item.quantity
+          return total + totalItem
+        }, 0)
+    }
+    return 0
+  }
 }

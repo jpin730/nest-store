@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { UUID } from 'crypto'
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer'
+import { UUID } from 'crypto'
 
 import { Product } from '../../products/entities/product.entity'
 import { Order } from './order.entity'
@@ -23,7 +24,8 @@ export class OrderItem {
   @Column({ type: 'int' })
   quantity: number
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -31,7 +33,8 @@ export class OrderItem {
   })
   createdAt: Date
 
-  @ApiProperty()
+  @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
