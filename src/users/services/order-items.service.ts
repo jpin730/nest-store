@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { ConfigType } from '@nestjs/config'
+import { Repository } from 'typeorm'
+import { UUID } from 'crypto'
+
+import {
+  CreateOrderItemDto,
+  PaginatedOrderItemsDto,
+  UpdateOrderItemDto,
+} from '../dtos/order-item.dto'
 import { Order } from '../entities/order.entity'
 import { OrderItem } from '../entities/order-item.entity'
 import { Product } from '../../products/entities/product.entity'
-import { Repository } from 'typeorm'
-import { CreateOrderItemDto, UpdateOrderItemDto } from '../dtos/order-item.dto'
-import { UUID } from 'crypto'
+import config from '../../config'
+import { QueryParamsDto } from 'src/common/dtos/query-params.dto'
 
 @Injectable()
 export class OrderItemsService {
@@ -13,10 +21,27 @@ export class OrderItemsService {
     @InjectRepository(Order) private orderRepo: Repository<Order>,
     @InjectRepository(OrderItem) private itemRepo: Repository<OrderItem>,
     @InjectRepository(Product) private productRepo: Repository<Product>,
+    @Inject(config.KEY) private appConfig: ConfigType<typeof config>,
   ) {}
 
-  getAllOrderItems(): Promise<OrderItem[]> {
-    return this.itemRepo.find()
+  async getAllOrderItems(
+    queryParams: QueryParamsDto,
+  ): Promise<PaginatedOrderItemsDto> {
+    const {
+      limit = this.appConfig.defaultQueryParams.limit,
+      offset = this.appConfig.defaultQueryParams.offset,
+    } = queryParams
+    const [data, total] = await this.itemRepo.findAndCount({
+      take: limit,
+      skip: offset,
+      order: { createAt: 'DESC' },
+    })
+    return {
+      data,
+      limit: limit,
+      offset: offset,
+      total,
+    }
   }
 
   async getOrderItem(id: UUID): Promise<OrderItem> {
