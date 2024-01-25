@@ -57,7 +57,7 @@ To connect to the database, you need to create a new server in PGAdmin with the 
 For generate migrations, you need to run the following command:
 
 ```bash
-npm run migrations:generate -- src/database/migrations/[MIGRATION_NAME]
+npm run migrations:generate src/database/migrations/[MIGRATION_NAME]
 ```
 
 For run migrations, you need to run the following command:
