@@ -23,17 +23,19 @@ export class Category {
 
   @ApiProperty()
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date
+  createdAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date
+  updatedAt: Date
 
   @ApiProperty({ type: () => Product, isArray: true })
   @ManyToMany(() => Product, (product) => product.categories)

@@ -22,6 +22,7 @@
     "migrations:generate": "npm run typeorm migration:generate -- -d src/database/data-source.ts",
     "migrations:run": "npm run typeorm migration:run -- -d src/database/data-source.ts",
     "migrations:show": "npm run typeorm migration:show -- -d src/database/data-source.ts",
+    "migrations:drop": "npm run typeorm schema:drop -- -d src/database/data-source.ts",
     "prepare": "husky install"
   },
   "dependencies": {

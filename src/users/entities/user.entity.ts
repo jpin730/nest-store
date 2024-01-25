@@ -32,20 +32,22 @@ export class User {
 
   @ApiProperty()
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date
+  createdAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date
+  updatedAt: Date
 
   @ApiProperty({ type: () => Customer })
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer
 }

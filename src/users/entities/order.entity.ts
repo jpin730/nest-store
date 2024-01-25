@@ -1,6 +1,7 @@
 import {
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -20,20 +21,23 @@ export class Order {
 
   @ApiProperty()
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date
+  createdAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date
+  updatedAt: Date
 
   @ApiProperty({ type: () => Customer })
   @ManyToOne(() => Customer, (customer) => customer.orders)
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer
 
   @ApiProperty({ type: () => OrderItem })

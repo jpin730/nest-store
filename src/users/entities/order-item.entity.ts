@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,23 +25,27 @@ export class OrderItem {
 
   @ApiProperty()
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date
+  createdAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date
+  updatedAt: Date
 
   @ApiProperty({ type: () => Product })
   @ManyToOne(() => Product)
+  @JoinColumn({ name: 'product_id' })
   product: Product
 
   @ApiProperty({ type: () => Order })
   @ManyToOne(() => Order, (order) => order.items)
+  @JoinColumn({ name: 'order_id' })
   order: Order
 }

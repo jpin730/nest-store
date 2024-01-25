@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -42,24 +43,31 @@ export class Product {
 
   @ApiProperty()
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt: Date
+  createdAt: Date
 
   @ApiProperty()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date
+  updatedAt: Date
 
   @ApiProperty({ type: () => Brand })
   @ManyToOne(() => Brand, (brand) => brand.products)
+  @JoinColumn({ name: 'brand_id' })
   brand: Brand
 
   @ApiProperty({ type: () => Category, isArray: true })
   @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable()
+  @JoinTable({
+    name: 'product_categories',
+    joinColumn: { name: 'product_id' },
+    inverseJoinColumn: { name: 'category_id' },
+  })
   categories: Category[]
 }
