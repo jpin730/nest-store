@@ -77,7 +77,3 @@ For drop tables of database you can execute `drop-table.sql` in database module 
 ```bash
 npm run migrations:drop
 ```
-
-## Deployment
-
-App deployed on: <https://nest-store-c3oo.onrender.com>.
